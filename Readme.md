@@ -1,30 +1,56 @@
-# Webby
-Webby Linux Server Configurator is a web server setup tool for ubuntu & centos linux, you can automate your web server installation without touching the configuration files. You may guess this script is just like Xampp or WampServer; No this script will give you an options of various web server software to install, you can choose one of these web server to install : Apache2, Nginx, Lighttpd, or OpenLiteSpeed.
+# [Webby](https://ianhersanto.github.io/Webby/index.html)
+### Small linux bash utility to build and prepare web server of your choice
+[![HitCount](http://hits.dwyl.io/IanHersanto/Webby.svg)](http://hits.dwyl.io/IanHersanto/Webby)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)<br/><br/>
+Webby Linux Http Server Installation Wizard is a web server configuration tool for Ubuntu, Debian, RHEL, Centos, Fedora linux. You can automate your web server installation without touching the configuration files. You may guess this script is just like Xampp or WampServer; No this script will give you an options of various web server software to install, you can choose one of these web server to install : Apache2, Nginx, Lighttpd, OpenLiteSpeed, Cherokee, Hiawata, or Monkey web server.
 This script will also help you installing most common web server for a website including FTP server, Database server, Perl and PHP.
-This script purpose was helping those PHP/Perl programmers who need a working development environment / true website environment and it hopes with this script they don't need to take their time learning how to setup their own development OSes, but you can also use to setup your web server on the internet. On windows there is an XAMPP, WampServer, EasyPHP, etc; but in Linux you have to do it manually by hand to setup PHP/Perl environment.
+This script purpose is helping those PHP/Perl programmers who need a working development environment / true website environment and it hopes with this utility they don't need to take their time learning how to setup their own development OSes, but with webby you can also use it to setup your own web server on the internet. On windows there is an XAMPP, WampServer, EasyPHP, etc; but in Linux you have to do it manually by hand to setup Web Server, Database, FTP, and PHP/Perl environment.
 
-# Supported Linux Version
-- Ubuntu Server 8.04 ~ 17.04 (32 bit version)
-- CentOS 5.0 ~ 7.0 (32 bit version)<br/>
+## Supported Linux Version (checked for testing progress)
+- [x] [Ubuntu Server](http://old-releases.ubuntu.com/releases/) 8.10 ~ 17.04 (32 bit version)
+- [ ] [CentOS](http://archive.kernel.org/centos-vault/) 6.0 ~ 7.x (32 bit version)
+- [ ] [Fedora](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/) 9 ~ 26 (32 bit version)
+- [ ] [Redhat Enterprise](https://developers.redhat.com/products/rhel/download/) 6.0 ~ 7.x (32 bit version)
+- [ ] [Debian](https://cdimage.debian.org/mirror/cdimage/archive/) 5.0 ~ 9.3 (32 bit version)
 
-# Installation
-Before you can run this webby server setup utility, please make sure you have a working internet connection, and also you have at least Ubuntu 8.04 (Hardy Heron) or CentOS 5.0 installed on your system.
-Download the package and log into your linux box and follow these following :
+The OS version above is using standard package distribution of minimum software tool requirements, but you can also use the below version of what is mentioned above by updating your software tools to meet these minimum requirements below :
+<br/>
 
-- Uncompress package
-   unzip master.zip
-- Change permission of setup file
-   chmod 755 setup.sh
-- Run the setup file
-   ./setup.sh
+## Minimum Requirements
+- Linux kernel 2.6.25
+- Perl 5.10.0
+- Wget 1.11.4
+- Glibc 2.8.90
+- Bash 3.2.39
 
-# Uninstallation
-You can uninstall all your installed package by using
-- ./setup.sh --uninstall
+## Recommended Requirements
+- Linux kernel 3.13
+- Perl 5.14
+- Wget 1.16
+- Glibc 2.15
+- Bash 4.2
 
-# Unsupported version
-## Ubuntu
-For an older Ubuntu 8.04 ~ 12.10 version which no longer supported by ubuntu repository, you may install the software by compiling from source code. You need to [download iso cd](http://old-releases.ubuntu.com/releases/) or [download iso dvd](https://mega.nz/#F!tzp2hIKZ!2uGLr-Cko7X11LQKPisCvQ) to install system based packages, then you can use them as apt-cdrom repository.
+## Installation
+Before you can run this utility, please make sure you have a working internet connection, and also you have at least Ubuntu 8.10, Debian 5.0, CentOS 6.0, RHEL 6.0, or Fedora 9 installed on your system.
+
+## Parameters 
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parameter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description |
+| --- | --- |
+| \-u \| \-\-uninstall | Uninstall packages (parameter : all, skipdb, skipdata)<br/>all&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: uninstall http server, web documents,ftp, mysql or postgresql.<br/>skipdb&nbsp;&nbsp;&nbsp;&nbsp;: uninstall http server, web documents, ftp but skip database server(if any).<br/>skipdata&nbsp;: uninstall http server and ftp only, and will keep web documents and database server.|
+| \-d \| \-\-dir | Install Webby to your own defined path |
+| \-i \| \-\-install\-legacy | Skip mounting cdrom/dvdrom ubuntu installation source, if you run older ubuntu release please make sure to still have your ubuntu installation cd mounted on tray, because it will required to install default software packages from cd/dvd. |
+| \-g \| \-\-get\-src | Download a set of source codes from a web server, database, php, and ftp package. This will download software with its dependency libraries. Example package name :<br/><br/> apache-2.4.29, nginx-1.12.2, lighttpd-1.4.49, litespeed-1.3.30,<br/>mysql-5.5.59, postgresql-10.3, mariadb-10.2.14, mongodb-3.4.14,<br/>php-5.6.34, proftpd-1.3.6, pureftpd-1.0.47, etc |
+| \-a \| \-\-skip\-repo\-update | Skip repository update (This will assume that your apt/yum/dnf repository list already updated). |
+| \-c \| \-\-custom\-repo | Define your custom ubuntu repository url.<br/>example :<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webby -c http://old-releases.ubuntu.com/ubuntu/ |
+| \-x \| \-\-copy | Copy current webby script file to remote server<br/>Example :<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webby -x 192.168.0.1 |
+| \-s \| \-\-skip\-net\-test | Skip internet connection checking. If you're using ubuntu then it will assumed that you will use your installer cd as apt source. |
+| \-r \| \-\-remove\-update | Remove wget upgrade and set back to original cd/dvd legacy. |
+| \-v \| \-\-verify\-source | Its recommended that you run this before installation to make sure that the source code still remain the same from developer (match to built state as used and tested on webby). You may cancel your installation if any new modification from developer could causing new bugs. |
+| \-q \| \-\-setup | Quick mode download & install web server of your choice, you can see available web server versions from ext/ folder. The package name used here is same as --get-src naming term.<br/><br/>apache-x.x.x	: download & install apache packages<br/>nginx-x.x.x		: download & install nginx packages<br/>lighttpd-x.x.x	: download & install lighttpd packages<br/>litespeed-x.x.x	: download & install openlitespeed packages<br/>mysql-x-x-x	: download & install mysql packages<br/>php-x-x-x  : download & install php packages<br/>etc |
+
+## Unsupported version
+### Ubuntu
+For an older Ubuntu 8.10 ~ 12.10 version which no longer supported by ubuntu repository, you may install the software by compiling from source code. You need to [download iso cd](http://old-releases.ubuntu.com/releases/) or [download iso dvd](https://mega.nz/#F!tzp2hIKZ!2uGLr-Cko7X11LQKPisCvQ) to install system based packages, then you can use them as apt-cdrom repository.
 To make your iso as an apt repository source, follow these steps below :
 - Backup your current apt configuration<br/>
 shell> mv /etc/apt/source.list
@@ -35,33 +61,56 @@ shell> apt-cdrom add
 - Update your apt<br/>
 shell> apt-get update
 - Then install the basic packages<br/>
-shell> apt-get install ssh build-essential gcc g++ make unzip
+shell> apt-get install ssh build-essential gettext libtool m4 autoconf gcc g++ make unzip
 
-## CentOS
-For an older CentOS 5.0 ~ 5.11 version which no longer supported by yum repository, you may install the software by compiling from  source code. You need to download a complete iso from [CentOS Vault](http://vault.centos.org/) and create your own iso yum repository by using these following steps :
-- Backup your current yum.repos.d, and remove all files in /etc/yum.repos.d<br/>
-shell> tar -zcvf ~/yum-repo-backup.tar.gz /etc/yum.repos.d/*<br/>
-shell>rm *.repo
-- Prepare your iso cdrom/dvdrom mounting directory (number is the amount of iso files). This example is using CentOS 5.0 cdrom iso which has 6 iso files<br/>
-shell> mkdir -p /media/iso/{1,2,3,4,5,6}
+### Fedora / CentOS / RHEL
+For an older Fedora 9 version which no longer supported by yum repository, you may install the software by compiling from  source code. You need to download a complete iso from [Fedora Archive](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/) and create your own iso yum repository by using these following steps :
+- Create directories for mounting iso files and backup your current yum.repos.d, then remove all files in /etc/yum.repos.d<br/>
+shell> mkdir -p /media/repo-cd/{1,2,3,4,5,6}<br/> 
+or<br/>
+shell> mkdir -p /media/repo-dvd <br/>
+shell> tar -czvf ~/repo-backup.tar.gz /eetc/yum.repos.d/fedora*.repo<br/>
+shell> rm -f /etc/yum.repos.d/*<br/>
 - Mount each of iso files<br/>
-shell> mount -t iso9660 -o loop ~/CentOS-1of6.iso /media/iso/1<br/>
-shell> mount -t iso9660 -o loop ~/CentOS-2of6.iso /media/iso/2<br/>
-shell> mount -t iso9660 -o loop ~/CentOS-3of6.iso /media/iso/3<br/>
-shell> mount -t iso9660 -o loop ~/CentOS-4of6.iso /media/iso/4<br/>
-shell> mount -t iso9660 -o loop ~/CentOS-5of6.iso /media/iso/5<br/>
-shell> mount -t iso9660 -o loop ~/CentOS-6of6.iso /media/iso/6
-- Install createrepo utility from mounted cdrom iso (CentOS 5.0 is located at iso number 5 of 6 cd)<br/>
-shell> cd /media/iso/5<br/>
-shell> ls /media/iso/5 | grep createrepo<br/>
-shell> rpm -i createrepo-x.x.x.noarch.rpm<br/>
-- Clean all your current yum repository cache<br/>
-shell> yum clean all
-- Register your iso cdrom repos<br/>
-shell> cd /media/iso<br/>
-shell> createrepo .
+shell> mount -t iso9660 -o loop ~/Fedora-9-disc1.iso /media/repo-cd/1<br/>
+shell> mount -t iso9660 -o loop ~/Fedora-9-disc2.iso /media/repo-cd/2<br/>
+shell> mount -t iso9660 -o loop ~/Fedora-9-disc3.iso /media/repo-cd/3<br/>
+shell> mount -t iso9660 -o loop ~/Fedora-9-disc4.iso /media/repo-cd/4<br/>
+shell> mount -t iso9660 -o loop ~/Fedora-9-disc5.iso /media/repo-cd/5<br/>
+shell> mount -t iso9660 -o loop ~/Fedora-9-disc6.iso /media/repo-cd/6<br/>
+- Make entry to /etc/fstab to mount iso files at boot<br/>
+shell> echo "/home/user-dir/Fedora-9-disc1.iso    /media/repo-cd/1         udf,iso9660 user,loop     0 0" >> /etc/fstab<br/>
+shell> echo "/home/user-dir/Fedora-9-disc2.iso    /media/repo-cd/2         udf,iso9660 user,loop     0 0" >> /etc/fstab<br/>
+shell> echo "/home/user-dir/Fedora-9-disc3.iso    /media/repo-cd/3         udf,iso9660 user,loop     0 0" >> /etc/fstab<br/>
+shell> echo "/home/user-dir/Fedora-9-disc4.iso    /media/repo-cd/4         udf,iso9660 user,loop     0 0" >> /etc/fstab<br/>
+shell> echo "/home/user-dir/Fedora-9-disc5.iso    /media/repo-cd/5         udf,iso9660 user,loop     0 0" >> /etc/fstab<br/>
+shell> echo "/home/user-dir/Fedora-9-disc6.iso    /media/repo-cd/6         udf,iso9660 user,loop     0 0" >> /etc/fstab<br/>
+- Auto mount for each iso at user login<br/>
+shell> echo "mount /media/repo-cd/1" >> ~/.bashrc<br/>
+shell> echo "mount /media/repo-cd/2" >> ~/.bashrc<br/>
+shell> echo "mount /media/repo-cd/3" >> ~/.bashrc<br/>
+shell> echo "mount /media/repo-cd/4" >> ~/.bashrc<br/>
+shell> echo "mount /media/repo-cd/5" >> ~/.bashrc<br/>
+shell> echo "mount /media/repo-cd/6" >> ~/.bashrc<br/>
+- Create file /etc/yum.repos.d/fedora-cd.repo and fill with<br/>
+shell> nano /etc/yum.repos.d/fedora-cd.repo
+
+       [fedora-cd]
+       name=Fedora $releasever - $basearch - Updates
+       failovermethod=priority
+       baseurl=file:///media/repo-cd/1
+               file:///media/repo-cd/2
+               file:///media/repo-cd/2
+               file:///media/repo-cd/3
+               file:///media/repo-cd/4
+               file:///media/repo-cd/5
+               file:///media/repo-cd/6
+       enabled=1
+       gpgcheck=1
+       gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$basearch
+
 - Update your yum cache<br/>
-shell> yum update
+shell> yum update<br/>
 - Install basic packages for compiling the source code<br/>
 shell> yum install gcc gcc-c++ automake autoconf flex bison pkgconfig rpm-build gettext gdb libtool binutils redhat-rpm-config
 
