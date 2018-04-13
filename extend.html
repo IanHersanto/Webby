@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Webby - Extending</title>
+  </head>
+  <body>
+    <div id="header">
+      <h1 id="title">Webby HTTPd installation wizard for linux</h1>
+    </div>
+    <div id="path"> </div>
+    <div id="maincontent">
+      <h1>Extending Webby</h1>
+      <p>What makes you think you need to extend webby? Well maybe you need to
+        install Apache2 version between 2.4.0 ~ 2.4.28. You can write your own
+        bash script and then put it on ext/ folder of webby. Webby only preserve
+        software listed on script by choosing the latest version of each
+        software releases. So you will not be able to use webby to install all
+        release of each software, because each software version will require
+        spesific library release used by the software on the date of its
+        release.<br />
+        For example Apache 2.0 release will not compatible with openssl 1.1.1,
+        because the openssl libraries used by apache 2.0 will use openssl at the
+        time apache 2.0 was built; so regarding to the release date of apache
+        2.0 it will compatible with openssl 0.9.x.<br />
+        <br />
+        When you write your own bash script, you need to test individually each
+        of library version that match to the software release. If you're a linux
+        C++ expert you can solve those compiling errors of each libraries by
+        your self, but if you're a newbie of C++ programming than google is your
+        answer. Ok enough talk, now we need to guide you to write your first
+        webby extension. Webby will call your script using the main function
+        "_ext_main", so this is the template of your first script :<br />
+        <br />
+        #!/bin/bash<br />
+        function _ext_main<br />
+        {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;# Your bash code here<br />
+&nbsp;&nbsp;&nbsp;&nbsp;echo "Hello World, I will guide you installing my own web server"<br />
+        }<br />
+        <br />
+        Ok, so you can save it as a bash script on <i>ext/webserver-1.0.sh</i><br />
+        <br />
+        To call from webby you just need to execute this :<br />&nbsp;&nbsp;&nbsp;&nbsp;<b><i>sudo webby -q webserver-1.0</i></b><br />
+        <br />
+        Thats it, from now on you can start to write your own webby extension.<br />
+        As a guide you can use these following internal webby functions to use
+        in your script.</p>
+      <table style="width: 100%;" cellspacing="0" cellpadding="8" border="1">
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>define_pkgconfig </td>
+            <td>This function will detect your correct pkgconfig version based
+              on your OS type and version.<br />
+              Return value : pkg-config version number<br />
+              <br />
+              Example : <br />
+              define_pkgconfig your_var_name<br />
+              wget -O ~/pkgconfig-0.${your_var_name}.tar.gz&nbsp;&nbsp;&nbsp;https://pkg-config.freedesktop.org/releases/pkg-config-0.${your_var_name}.tar.gz<br />
+              <br />
+              The example above will help you to define which pkgconfig version
+              does your OS needed. You can use your own version for your own
+              choice without this function, but this function will help you to
+              pick the file version that match to your OS release date. </td>
+          </tr>
+          <tr>
+            <td>define_cmake</td>
+            <td>This function will determine your correct cmake version based on
+              your OS type and version.<br />
+              Return value : cmake version number</td>
+          </tr>
+          <tr>
+            <td>in_array<br />
+            </td>
+            <td>This function will check if spesific word exists on array<br />
+              <br />
+              Example :<br />
+              declare -a my_list=('one' 'two' 'three')<br />
+              in_array my_list "four" &amp;&amp; echo "Yes its there" || echo
+              "No its not there"<br />
+            </td>
+          </tr>
+          <tr>
+            <td>check_base_pkg<br />
+            </td>
+            <td>This function will check your system each of base package needed
+              for source code compilation tools.<br />
+              Ubuntu or Debian based will check for "build-essential gcc g++
+              libtool m4 autoconf automake make unzip"<br />
+              Centos or RHEL based will check for "rpm-build gcc gcc-c++
+              libtool"</td>
+          </tr>
+          <tr>
+            <td>download<br />
+            </td>
+            <td>This function will help you to download file from the internet.<br />
+              Parameter :<br />
+              1. URL<br />
+              2. Folder/Filename<br />
+              <br />
+              Example :<br />
+              download&nbsp;&nbsp;&nbsp;https://pkg-config.freedesktop.org/releases/pkg-config-0.23.tar.gz&nbsp;&nbsp;&nbsp;/home/user/pkgconfig.tar.gz</td>
+          </tr>
+          <tr>
+            <td>prepare_install_media</td>
+            <td>This function will help you to setup your <strong>apt-get</strong>
+              (Debian based) or <strong>yum</strong> (RHEL based) to set your
+              cd/dvd OS installation as your main repository. This function will
+              help you to setup apt-cdrom / yum cd based repo for old version of
+              the OS release. If you have installed a latest OS version so you
+              don't need this function because you still can use apt-get / yum
+              using online repository.</td>
+          </tr>
+          <tr>
+            <td>define_gpgerror</td>
+            <td>This function will help you determine gpgerror file version
+              based on your OS release.</td>
+          </tr>
+          <tr>
+            <td>define_gcrypt</td>
+            <td>This function will help you determine gcrypt file version based
+              on your OS release.</td>
+          </tr>
+          <tr>
+            <td>define_gnutls</td>
+            <td>This function will help you determine gnutls file version based
+              on your OS release.</td>
+          </tr>
+          <tr>
+            <td>define_glib</td>
+            <td>This function will help you determine glib file version based on
+              your OS release.</td>
+          </tr>
+          <tr>
+            <td>update_wget</td>
+            <td>This function will update your current wget tool to version
+              1.17.1. Wget 1.17.1 will help you to get file from
+              https://github.com or https://curl.haxx.se without SSL error.</td>
+          </tr>
+          <tr>
+            <td>compile_mysql</td>
+            <td>This function will help you install mysql server or mariadb
+              server<br />
+              Parameter :<br />
+              1. server name : 'mysql' or 'mariadb'<br />
+              2. version<br />
+              <br />
+              Mysql server version you can use :&nbsp;&nbsp;'5.5.59' '5.6.39' '5.7.21'<br />
+              Mariadb server version you can use :&nbsp;&nbsp;'5.5.59' '10.0.34' '10.1.32'
+              '10.2.14' '10.3.5'<br />
+              <br />
+              Example :<br />
+              compile_mysql mysql 5.5.59</td>
+          </tr>
+          <tr>
+            <td>compile_pgsql</td>
+            <td>This function will help you install postgresql server<br />
+              Parameter :<br />
+              1. version<br />
+              <br />
+              Postgresql server version you can use : '8.04'</td>
+          </tr>
+          <tr>
+            <td>verify_packages<br />
+            </td>
+            <td>This function will help you to verify local source file with
+              online version. This function will compare sha1, sha256, or gpgkey
+              file signatures from local with online source. This will also help
+              you to detect any updates of each software source codes, if file
+              signature changed then you need to re-test the new version from
+              website, is there any bugs with current webby script ?<br />
+              <br />
+              Parameter :<br />
+              1. Software name <br />&nbsp;&nbsp;&nbsp;{apache2, nginx, lighttpd, openlitespeed, hiawata, cherokee,
+              monkey, mysql, postgresql, mongodb, firebird, php}<br />
+              2. Software version<br />
+              <br />
+              Example :<br />
+              verify_packages apache2 2.4.25<br />
+            </td>
+          </tr>
+          <tr>
+            <td>download_packages</td>
+            <td>This function will help you download software packages with its
+              dependency libraries.<br />
+              Parameter :<br />
+              1. Software name<br />&nbsp;&nbsp;&nbsp;{apache2, nginx, lighttpd, openlitespeed, hiawata, cherokee,
+              monkey, mysql, postgresql, mongodb, firebird, php}<br />
+              2. Software version<br />
+              <br />
+              Example :<br />
+              download_packages mysql 5.5.59</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>You can also use these following constant variable </p>
+      <table style="width: 100%;" cellspacing="0" cellpadding="4" border="1">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Description </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>OSVER<br />
+            </td>
+            <td>Contain operating system version<br />
+            </td>
+          </tr>
+          <tr>
+            <td>PWD<br />
+            </td>
+            <td>Current active directory<br />
+            </td>
+          </tr>
+          <tr>
+            <td>INSTALL_DIR<br />
+            </td>
+            <td>Webby installation directory<br />
+            </td>
+          </tr>
+          <tr>
+            <td>ARCHIVE_DIR<br />
+            </td>
+            <td>Source code download folder<br />
+            </td>
+          </tr>
+          <tr>
+            <td>DEPLOY_DIR<br />
+            </td>
+            <td>Source code deployment folder<br />
+            </td>
+          </tr>
+          <tr>
+            <td>SSH_KEY</td>
+            <td>Location of ssh-keygen</td>
+          </tr>
+          <tr>
+            <td>SSH_CP</td>
+            <td>Location of ssh-copy-id</td>
+          </tr>
+          <tr>
+            <td>SHARUTILS_EXISTS</td>
+            <td>If uuencode &amp; uudecode is installed on your system than it
+              will contain the path, if not it will empty</td>
+          </tr>
+          <tr>
+            <td>WGET_BIN</td>
+            <td>Location of wget</td>
+          </tr>
+          <tr>
+            <td>WGET_VERSION</td>
+            <td>Contain wget software version</td>
+          </tr>
+          <tr>
+            <td>TEMP_DIR</td>
+            <td>Location of temporary dir /tmp</td>
+          </tr>
+          <tr>
+            <td>SCRIPT_NAME<br />
+            </td>
+            <td>Contain the filename of webby script<br />
+            </td>
+          </tr>
+          <tr>
+            <td>MAJORVERSION | OSMAJ</td>
+            <td>Contain operating system major version</td>
+          </tr>
+          <tr>
+            <td>MINORVERSION | OSMIN</td>
+            <td>Contain operating system minor version</td>
+          </tr>
+          <tr>
+            <td>CPU</td>
+            <td>Contain CPU type of x32 or x64</td>
+          </tr>
+          <tr>
+            <td>MEMSIZE</td>
+            <td>Contain total memory of your system</td>
+          </tr>
+          <tr>
+            <td>OSNAME</td>
+            <td>Contain the name of your operating system (ubuntu, debian,
+              fedora, centos, readhat)</td>
+          </tr>
+          <tr>
+            <td>USRADD</td>
+            <td>Contain location of useradd, function to add new user on system</td>
+          </tr>
+          <tr>
+            <td>GRPADD</td>
+            <td>Contain location of groupadd, function to add new group on
+              system</td>
+          </tr>
+          <tr>
+            <td>USERDEL</td>
+            <td>Contain location of userdel, function to delete user on system</td>
+          </tr>
+          <tr>
+            <td>GRPDEL<br />
+            </td>
+            <td>Contain location of groupdel, function to delete group on system<br />
+            </td>
+          </tr>
+          <tr>
+            <td>VERSION</td>
+            <td>Contain operating system version</td>
+          </tr>
+          <tr>
+            <td>DEFAULT_PKG</td>
+            <td>Contain package management system (apt, yum, dnf)</td>
+          </tr>
+          <tr>
+            <td>DEFAULT_SHELL</td>
+            <td>Contain location of nologin, default user fcgi shell (nologin)</td>
+          </tr>
+          <tr>
+            <td>TZ</td>
+            <td>Contain active time zone of current system</td>
+          </tr>
+          <tr>
+            <td>UPDATE_WGET</td>
+            <td>Contain 1 (true) or 0 (false) if your system needs wget update</td>
+          </tr>
+          <tr>
+            <td>UNINSTALL_ALL</td>
+            <td>Flag from script parameter to uninstall <br />
+              webby -u all</td>
+          </tr>
+          <tr>
+            <td>UNINSTALL_HTTP_ONLY</td>
+            <td>Flag from script parameter to uninstall web server only<br />
+              webby -u skipdb</td>
+          </tr>
+          <tr>
+            <td>UNINSTALL_HTTP_AND_FTP</td>
+            <td>Flag from script parameter to uninstall web server and ftp
+              server<br />
+              webby -u skipdata</td>
+          </tr>
+        </tbody>
+      </table>
+      <p><br />
+      </p>
+      <p><br />
+        [ <a href="index.html">Index</a> ] [ Extend ] </p>
+    </div>
+    <hr />
+    <div id="footer">
+      <div id="copyright"> The page provided here is copyrighted by <a href="https://ianhersanto.blogspot.com/"
+          target="_blank">Ian Hersanto</a> &copy; 2017. All rights reserved. </div>
+    </div>
+  </body>
+</html>
