@@ -43,7 +43,7 @@
         <br />
         To call from webby you just need to execute this :<br />&nbsp;&nbsp;&nbsp;&nbsp;<b><i>sudo webby -q webserver-1.0</i></b><br />
         <br />
-        Thats it, from now on you can start to write your own webby extension.<br />
+        Thats it, from now on you can start to write your own webby extension. For a complete example you can see the Apache-2.4.25.sh inside ext folder.<br />
         As a guide you can use these following internal webby functions to use
         in your script.</p>
       <table style="width: 100%;" cellspacing="0" cellpadding="8" border="1">
@@ -55,35 +55,32 @@
         </thead>
         <tbody>
           <tr>
-            <td>define_pkgconfig </td>
-            <td>This function will detect your correct pkgconfig version based
-              on your OS type and version.<br />
-              Return value : pkg-config version number<br />
-              <br />
-              Example : <br />
-              define_pkgconfig your_var_name<br />
-              wget -O ~/pkgconfig-0.${your_var_name}.tar.gz&nbsp;&nbsp;&nbsp;https://pkg-config.freedesktop.org/releases/pkg-config-0.${your_var_name}.tar.gz<br />
-              <br />
-              The example above will help you to define which pkgconfig version
-              does your OS needed. You can use your own version for your own
-              choice without this function, but this function will help you to
-              pick the file version that match to your OS release date. </td>
-          </tr>
-          <tr>
-            <td>define_cmake</td>
-            <td>This function will determine your correct cmake version based on
-              your OS type and version.<br />
-              Return value : cmake version number</td>
-          </tr>
-          <tr>
-            <td>in_array<br />
+            <td>add_dialog<br />
             </td>
-            <td>This function will check if spesific word exists on array<br />
+            <td>This function will help you to print your install dialog procedure, to easing your life rather than write same code again each time you need a new features. There are 2 modes of dialog, first is Confirmation dialog, and second is Option list dialog.
+              <br /><br/>
+              Parameter of Confirmation Dialog :<br />
+              1. Message/Question<br />
+              2. Dialog type :<br />
+                 &nbsp;&nbsp;&nbsp;&nbsp;Dialog type is like a confirmation dialog on windows :<br/>
+                 &nbsp;&nbsp;&nbsp;&nbsp;$DIALOG_YESNO : This will print confirmation with Yes as a default answer if you fill nothing.<br/>
+                 &nbsp;&nbsp;&nbsp;&nbsp;$DIALOG_NOYES : This will print confirmation with No as a default answer  if you fill nothing.<br/>
+              3. Dialog Result : This will contain the answer of a user.<br/>
               <br />
               Example :<br />
-              declare -a my_list=('one' 'two' 'three')<br />
-              in_array my_list "four" &amp;&amp; echo "Yes its there" || echo
-              "No its not there"<br />
+              &nbsp;&nbsp;&nbsp;message="Are you want to format your HDrive ?"<br/>
+              &nbsp;&nbsp;&nbsp;add_dialog $message $DIALOG_YESNO result<br />
+              &nbsp;&nbsp;&nbsp;echo "You pick : $result"<br/><br/>
+              The above example will print <br/><br/>
+              root@localhost$ Are you want to format your HDrive ? [Y/n] :<br/><br/>
+
+              Parameter of Option List Dialog :<br/>
+               1. Message/Question<br/>
+               2. Title<br/>
+               3. Dialog Type :<br/>
+               &nbsp;&nbsp;&nbsp;&nbsp;$DIALOG_OPTS : This will print a list of options from your own defined function to give a list of<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;choices in an array, your own function must give 1 parameter as a result array.<br/>
+               4. User Defined Function name : This is the name of your own function located at your own script.<br/>
+               5. Dialog Result : This will contain the answer of a user.<br/>
             </td>
           </tr>
           <tr>
@@ -95,53 +92,6 @@
               libtool m4 autoconf automake make unzip"<br />
               Centos or RHEL based will check for "rpm-build gcc gcc-c++
               libtool"</td>
-          </tr>
-          <tr>
-            <td>download<br />
-            </td>
-            <td>This function will help you to download file from the internet.<br />
-              Parameter :<br />
-              1. URL<br />
-              2. Folder/Filename<br />
-              <br />
-              Example :<br />
-              download&nbsp;&nbsp;&nbsp;https://pkg-config.freedesktop.org/releases/pkg-config-0.23.tar.gz&nbsp;&nbsp;&nbsp;/home/user/pkgconfig.tar.gz</td>
-          </tr>
-          <tr>
-            <td>prepare_install_media</td>
-            <td>This function will help you to setup your <strong>apt-get</strong>
-              (Debian based) or <strong>yum</strong> (RHEL based) to set your
-              cd/dvd OS installation as your main repository. This function will
-              help you to setup apt-cdrom / yum cd based repo for old version of
-              the OS release. If you have installed a latest OS version so you
-              don't need this function because you still can use apt-get / yum
-              using online repository.</td>
-          </tr>
-          <tr>
-            <td>define_gpgerror</td>
-            <td>This function will help you determine gpgerror file version
-              based on your OS release.</td>
-          </tr>
-          <tr>
-            <td>define_gcrypt</td>
-            <td>This function will help you determine gcrypt file version based
-              on your OS release.</td>
-          </tr>
-          <tr>
-            <td>define_gnutls</td>
-            <td>This function will help you determine gnutls file version based
-              on your OS release.</td>
-          </tr>
-          <tr>
-            <td>define_glib</td>
-            <td>This function will help you determine glib file version based on
-              your OS release.</td>
-          </tr>
-          <tr>
-            <td>update_wget</td>
-            <td>This function will update your current wget tool to version
-              1.17.1. Wget 1.17.1 will help you to get file from
-              https://github.com or https://curl.haxx.se without SSL error.</td>
           </tr>
           <tr>
             <td>compile_mysql</td>
@@ -167,6 +117,105 @@
               Postgresql server version you can use : '8.04'</td>
           </tr>
           <tr>
+            <td>define_pkgconfig </td>
+            <td>This function will detect your correct pkgconfig version based
+              on your OS type and version.<br />
+              Return value : pkg-config version number<br />
+              <br />
+              Example : <br />
+              define_pkgconfig your_var_name<br />
+              wget -O ~/pkgconfig-0.${your_var_name}.tar.gz&nbsp;&nbsp;&nbsp;https://pkg-config.freedesktop.org/releases/pkg-config-0.${your_var_name}.tar.gz<br />
+              <br />
+              The example above will help you to define which pkgconfig version
+              does your OS needed. You can use your own version for your own
+              choice without this function, but this function will help you to
+              pick the file version that match to your OS release date. </td>
+          </tr>
+          <tr>
+            <td>define_cmake</td>
+            <td>This function will determine your correct cmake version based on
+              your OS type and version.<br />
+              Return value : cmake version number</td>
+          </tr>
+          <tr>
+            <td>define_gpgerror</td>
+            <td>This function will help you determine gpgerror file version
+              based on your OS release.</td>
+          </tr>
+          <tr>
+            <td>define_gcrypt</td>
+            <td>This function will help you determine gcrypt file version based
+              on your OS release.</td>
+          </tr>
+          <tr>
+            <td>define_gnutls</td>
+            <td>This function will help you determine gnutls file version based
+              on your OS release.</td>
+          </tr>
+          <tr>
+            <td>define_glib</td>
+            <td>This function will help you determine glib file version based on
+              your OS release.</td>
+          </tr>
+          <tr>
+            <td>download<br />
+            </td>
+            <td>This function will help you to download file from the internet.<br />
+              Parameter :<br />
+              1. URL<br />
+              2. Folder/Filename<br />
+              <br />
+              Example :<br />
+              download&nbsp;&nbsp;&nbsp;https://pkg-config.freedesktop.org/releases/pkg-config-0.23.tar.gz&nbsp;&nbsp;&nbsp;/home/user/pkgconfig.tar.gz</td>
+          </tr>
+          <tr>
+            <td>download_packages</td>
+            <td>This function will help you download software packages with its
+              dependency libraries.<br />
+              Parameter :<br />
+              1. Software name<br />&nbsp;&nbsp;&nbsp;{apache2, nginx, lighttpd, openlitespeed, hiawata, cherokee,
+              monkey, mysql, postgresql, mongodb, firebird, php}<br />
+              2. Software version<br />
+              <br />
+              Example :<br />
+              download_packages mysql 5.5.59</td>
+          </tr>
+          <tr>
+            <td>in_array<br />
+            </td>
+            <td>This function will check if spesific word exists on array<br />
+              <br />
+              Example :<br />
+              declare -a my_list=('one' 'two' 'three')<br />
+              in_array my_list "four" &amp;&amp; echo "Yes its there" || echo
+              "No its not there"<br />
+            </td>
+          </tr>
+          <tr>
+            <td>prepare_install_media</td>
+            <td>This function will help you to setup your <strong>apt-get</strong>
+              (Debian based) or <strong>yum</strong> (RHEL based) to set your
+              cd/dvd OS installation as your main repository. This function will
+              help you to setup apt-cdrom / yum cd based repo for old version of
+              the OS release. If you have installed a latest OS version so you
+              don't need this function because you still can use apt-get / yum
+              using online repository.</td>
+          </tr>
+          <tr>
+            <td>require</td>
+            <td>This function will automatically download, extract, and install
+              of common libraries needed by Apache2, nginx, lighttpd. But this function will not guarantee you of successfull compilation, it will compile with default parameter used by webby. If you experience compilation error than you need to write it manually to add some patch to the source. Array index will determine the dependency of each other, you can see the dependency of each libraries <a href="dependency.html">here</a><br/><br/>
+              Example Use :<br/>
+              declare -a files=("apr-1.6.2" "apr-util-1.6.0")<br/>require files<br/><br/>The command above will install apr-1.6.0 dependency used by apr-util-1.6.0 (--with-apr)<br/>
+              <br/>Wrong use :<br/>declare -a files=("apr-util-1.6.0" "apr-1.6.2")<br/>require files<br/><br/>The command above will install apr-util-1.6.0 without apr-1.6.2<br/><br/>These list is the name of library you can use for your own script.<br/><a target="_blank" href="http://zlib.net/fossils/">zlib</a>, <a target="_blank" href="http://www.bzip.org">bzip2</a>, <a target="_blank" href="https://ftp.gnu.org/pub/gnu/libiconv/">libiconv</a>, <a target="_blank" href="https://ftp.pcre.org/pub/pcre">pcre</a>, <a target="_blank" href="https://www.openssl.org/source/">openssl</a>, <a target="_blank" href="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/">libressl</a>, <a target="_blank" href="https://pkg-config.freedesktop.org/releases/">pkg-config</a>, <a target="_blank" href="">glib</a>, <a target="_blank" href="https://sourceforge.net/projects/expat/files/expat/">expat</a>, <a target="_blank" href="https://archive.apache.org/dist/apr/">apr</a>, <a target="_blank" href="https://archive.apache.org/dist/apr/">apr-util</a>, <a target="_blank" href="ftp://ftp.gnupg.org/gcrypt/libgpg-error/">libgpg-error</a>, <a target="_blank" href="ftp://ftp.gnupg.org/gcrypt/libgcrypt/">libgcrypt</a>, <a target="_blank" href="https://www.gnupg.org/ftp/gcrypt/gnutls/">gnutls</a></td>
+          </tr>
+          <tr>
+            <td>update_wget</td>
+            <td>This function will update your current wget tool to version
+              1.17.1. Wget 1.17.1 will help you to get file from
+              https://github.com or https://curl.haxx.se without SSL error.</td>
+          </tr>
+          <tr>
             <td>verify_packages<br />
             </td>
             <td>This function will help you to verify local source file with
@@ -184,18 +233,6 @@
               Example :<br />
               verify_packages apache2 2.4.25<br />
             </td>
-          </tr>
-          <tr>
-            <td>download_packages</td>
-            <td>This function will help you download software packages with its
-              dependency libraries.<br />
-              Parameter :<br />
-              1. Software name<br />&nbsp;&nbsp;&nbsp;{apache2, nginx, lighttpd, openlitespeed, hiawata, cherokee,
-              monkey, mysql, postgresql, mongodb, firebird, php}<br />
-              2. Software version<br />
-              <br />
-              Example :<br />
-              download_packages mysql 5.5.59</td>
           </tr>
         </tbody>
       </table>
