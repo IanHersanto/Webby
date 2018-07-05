@@ -2,12 +2,11 @@
 ### Small linux bash utility to build and prepare web server of your choice
 [![HitCount](http://hits.dwyl.io/IanHersanto/Webby.svg)](http://hits.dwyl.io/IanHersanto/Webby)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)<br/><br/>
-Webby Linux Http Server Installation Wizard is a web server configuration tool for Ubuntu, Debian, RHEL, Centos, Fedora linux. You can automate your web server installation without touching the configuration files. You may guess this script is just like Xampp or WampServer; No this script will give you an options of various web server software to install, you can choose one of these web server to install : Apache2, Nginx, Lighttpd, OpenLiteSpeed, Cherokee, Hiawata, or Monkey web server.
-This script will also help you installing most common web server for a website including FTP server, Database server, Perl and PHP.
-This script purpose is helping those PHP/Perl programmers who need a working development environment / true website environment and it hopes with this utility they don't need to take their time learning how to setup their own development OSes, but with webby you can also use it to setup your own web server on the internet. On windows there is an XAMPP, WampServer, EasyPHP, etc; but in Linux you have to do it manually by hand to setup Web Server, Database, FTP, and PHP/Perl environment.
+Webby Linux Http Server Installation Wizard is a web server configuration tool for Ubuntu, Debian, RHEL, Centos, and Fedora linux. You can automate your web server installation without touching the configuration files or even experiencing compilation error. You may guess this script is just like Xampp or WampServer; No this script will give you an options of various web server software to install, you can choose one of these web server to install : Apache2, Nginx, Lighttpd, OpenLiteSpeed, Cherokee, Hiawata, or Monkey web server.
+Officially webby is written to help PHP/Perl programmers who need a working development environment / true website environment and it hopes with this utility they don't need to take their time learning how to setup their own development OSes, but with webby you can also to use it to setup your own unmanaged vps/dedicated web server on the internet. On windows there is an XAMPP, WampServer, EasyPHP, etc; but in Linux you have to do it manually by hand to setup Web Server, Database, FTP, and PHP/Perl environment.
 
 ## Supported Linux Version (checked for testing progress)
-- [x] [Ubuntu Server](http://old-releases.ubuntu.com/releases/) 8.10 ~ 17.04 (32 bit version)
+- [x] [Ubuntu Server](http://old-releases.ubuntu.com/releases/) 8.10 ~ 18.04 (32 bit version)
 - [ ] [CentOS](http://archive.kernel.org/centos-vault/) 6.0 ~ 7.x (32 bit version)
 - [ ] [Fedora](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/) 9 ~ 26 (32 bit version)
 - [ ] [Redhat Enterprise](https://developers.redhat.com/products/rhel/download/) 6.0 ~ 7.x (32 bit version)
@@ -19,7 +18,7 @@ The OS version above is using standard package distribution of minimum software 
 ## Minimum Requirements
 - Linux kernel 2.6.25
 - Perl 5.10.0
-- Wget 1.11.4
+- Wget 1.17.1 (optional)
 - Glibc 2.8.90
 - Bash 3.2.39
 
@@ -38,12 +37,12 @@ Before you can run this utility, please make sure you have a working internet co
 | --- | --- |
 | \-u \| \-\-uninstall | Uninstall packages (parameter : all, skipdb, skipdata)<br/>all&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: uninstall http server, web documents,ftp, mysql or postgresql.<br/>skipdb&nbsp;&nbsp;&nbsp;&nbsp;: uninstall http server, web documents, ftp but skip database server(if any).<br/>skipdata&nbsp;: uninstall http server and ftp only, and will keep web documents and database server.|
 | \-d \| \-\-dir | Install Webby to your own defined path |
-| \-i \| \-\-install\-legacy | Skip mounting cdrom/dvdrom ubuntu installation source, if you run older ubuntu release please make sure to still have your ubuntu installation cd mounted on tray, because it will required to install default software packages from cd/dvd. |
-| \-g \| \-\-get\-src | Download a set of source codes from a web server, database, php, and ftp package. This will download software with its dependency libraries. Example package name :<br/><br/> apache-2.4.29, nginx-1.12.2, lighttpd-1.4.49, litespeed-1.3.30,<br/>mysql-5.5.59, postgresql-10.3, mariadb-10.2.14, mongodb-3.4.14,<br/>php-5.6.34, proftpd-1.3.6, pureftpd-1.0.47, etc |
+| \-i \| \-\-install\-legacy | If you run an older OS release please make sure to still have your OS installation cd/dvd mounted on tray, because it will required to install default software packages from cd/dvd installer. |
+| \-g \| \-\-get\-src | Download a set of source codes of a web server, database, php, and ftp package. This will download software with its dependency libraries. Example package name :<br/><br/> apache-2.4.29, nginx-1.12.2, lighttpd-1.4.49, litespeed-1.3.30,<br/>mysql-5.5.59, postgresql-10.3, mariadb-10.2.14, mongodb-3.4.14,<br/>php-5.6.34, proftpd-1.3.6, pureftpd-1.0.47, etc |
 | \-a \| \-\-skip\-repo\-update | Skip repository update (This will assume that your apt/yum/dnf repository list already updated). |
-| \-c \| \-\-custom\-repo | Define your custom ubuntu repository url.<br/>example :<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webby -c http://old-releases.ubuntu.com/ubuntu/ |
-| \-x \| \-\-copy | Copy current webby script file to remote server<br/>Example :<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webby -x 192.168.0.1 |
-| \-s \| \-\-skip\-net\-test | Skip internet connection checking. If you're using ubuntu then it will assumed that you will use your installer cd as apt source. |
+| \-c \| \-\-custom\-repo | Define your custom OS repository url.<br/>example :<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webby -c http://old-releases.ubuntu.com/ubuntu/ |
+| \-x \| \-\-copy | Copy current webby script file to remote server<br/>Example :<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;webby -x user@192.168.0.1 |
+| \-s \| \-\-skip\-net\-test | Skip internet connection checking. But this will require OS installation cd/dvd. |
 | \-r \| \-\-remove\-update | Remove wget upgrade and set back to original cd/dvd legacy. |
 | \-v \| \-\-verify\-source | Its recommended that you run this before installation to make sure that the source code still remain the same from developer (match to built state as used and tested on webby). You may cancel your installation if any new modification from developer could causing new bugs. |
 | \-q \| \-\-setup | Quick mode download & install web server of your choice, you can see available web server versions from ext/ folder. The package name used here is same as --get-src naming term.<br/><br/>apache-x.x.x	: download & install apache packages<br/>nginx-x.x.x		: download & install nginx packages<br/>lighttpd-x.x.x	: download & install lighttpd packages<br/>litespeed-x.x.x	: download & install openlitespeed packages<br/>mysql-x-x-x	: download & install mysql packages<br/>php-x-x-x  : download & install php packages<br/>etc |
@@ -54,14 +53,14 @@ For an older Ubuntu 8.10 ~ 12.10 version which no longer supported by ubuntu rep
 To make your iso as an apt repository source, follow these steps below :
 - Backup your current apt configuration<br/>
 shell> mv /etc/apt/source.list
-- Make sure your symbolic link /media/cdrom is pointed to the correct cdrom/dvdrom of your iso<br/>
+- Make sure your symbolic link /media/cdrom is pointed to the correct cdrom/dvdrom of your iso. This should be pointing to /media/cdrom -> /media/cdrom0 -> /dev/sr0<br/>
 shell> ls -la /media
 - Register your mounted iso to apt<br/>
-shell> apt-cdrom add
+shell> apt-cdrom -d /media/cdrom add
 - Update your apt<br/>
 shell> apt-get update
 - Then install the basic packages<br/>
-shell> apt-get install ssh build-essential gettext libtool m4 autoconf gcc g++ make unzip
+shell> apt-get install ssh build-essential gettext libtool m4 autoconf gcc g++ usbutils make unzip
 
 ### Fedora / CentOS / RHEL
 For an older Fedora 9 version which no longer supported by yum repository, you may install the software by compiling from  source code. You need to download a complete iso from [Fedora Archive](https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/) and create your own iso yum repository by using these following steps :
